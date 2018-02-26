@@ -1,0 +1,70 @@
+import { EnumClass, EnumType, EnumValue } from '../src';
+
+describe('enum', () => {
+    @EnumClass
+    class Color extends EnumType {
+        @EnumValue
+        static RED = new Color();
+        @EnumValue
+        static BLUE = new Color();
+
+        foo = 'foo';
+        bar = 'bar';
+    }
+
+    it('class.values', () => {
+        const values = Color.values();
+        expect(values).toHaveLength(2);
+        expect(values).toContain(Color.RED);
+        expect(values).toContain(Color.BLUE);
+    });
+
+    it('class.valueOf', () => {
+        const red = Color.valueOf('RED');
+        expect(red).toBe(Color.RED);
+    });
+
+    it('EnumClass()', () => {
+        expect(() => (Color as Function)()).toThrow();
+    });
+
+    it('new EnumClass()', () => {
+        expect(() => new Color()).toThrow();
+    });
+
+    describe('enum class should be immutable', () => {
+        it('add property to enum class should throw', () => {
+            expect(() => (Color as any).foo = 'whatever').toThrow();
+        });
+
+        it('change enum class property should throw', () => {
+            expect(() => (Color.RED as any) = 'whatever').toThrow();
+        });
+
+        it('remove property from enum class should fail', () => {
+            expect(Reflect.deleteProperty(Color, 'RED')).toBeFalsy();
+        });
+    });
+
+    it('instance.toString, toLocaleString, valueOf', () => {
+        [
+            Color.RED.toString(),
+            Color.RED.valueOf(),
+            Color.RED.toLocaleString()
+        ].forEach(e => expect(e).toBe('RED'));
+    });
+
+    describe('enum value should be immutable', () => {
+        it('add property to enum value should throw', () => {
+            expect(() => (Color.RED as any).foo = 'whatever').toThrow();
+        });
+
+        it('change enum value property should throw', () => {
+            expect(() => Color.RED.foo = 'whatever').toThrow();
+        });
+
+        it('remove property from enum value should fail', () => {
+            expect(Reflect.deleteProperty(Color.RED, 'foo')).toBeFalsy();
+        });
+    });
+});
