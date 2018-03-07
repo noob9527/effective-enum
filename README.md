@@ -3,6 +3,16 @@
 # effective-enum
 > for the time being, the typescript enum type is quite hard to use, this repo tries to implement a typesafe enum pattern described in the first edition of [effective java](https://www.amazon.com/Effective-Java-3rd-Joshua-Bloch/dp/0134685997)
 
+### installation
+via npm
+```
+npm install effective-enum --save
+```
+via yarn
+```
+yarn add effective-enum
+```
+
 ### getting started
 ```typescript
 @EnumClass
