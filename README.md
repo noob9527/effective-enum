@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/noob9527/enum.svg?branch=master)](https://travis-ci.org/noob9527/enum)
-[![Coverage Status](https://coveralls.io/repos/github/noob9527/enum/badge.svg?branch=master)](https://coveralls.io/github/noob9527/enum?branch=master)
-# enum
+[![Build Status](https://travis-ci.org/noob9527/effective-enum.svg?branch=master)](https://travis-ci.org/noob9527/effective-enum)
+[![Coverage Status](https://coveralls.io/repos/github/noob9527/effective-enum/badge.svg?branch=master)](https://coveralls.io/github/noob9527/effective-enum?branch=master)
+# effective-enum
 > for the time being, the typescript enum type is quite hard to use, this repo tries to implement a typesafe enum pattern described in the first edition of [effective java](https://www.amazon.com/Effective-Java-3rd-Joshua-Bloch/dp/0134685997)
 
 ### getting started
