@@ -25,6 +25,12 @@ export function EnumClass<T extends Function>(target: T): T {
             return Reflect.getOwnMetadata(PREFIX + name, target);
         },
     });
+    // instance.toJSON
+    if (!target.prototype.hasOwnProperty('toJSON')) {
+        target.prototype.toJSON = function () {
+            return this.toString();
+        };
+    }
 
     Object.freeze(target);
 
@@ -67,6 +73,7 @@ export abstract class EnumType {
     static values<T>(): T[] {
         throw Error('Did you forget to put the "EnumClass" decorator on the class?');
     }
+
     static valueOf<T>(name: string): T {
         throw Error('Did you forget to put the "EnumClass" decorator on the class?');
     }

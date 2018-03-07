@@ -68,3 +68,34 @@ describe('enum', () => {
         });
     });
 });
+
+test('default toJSON should return instance.toString()', () => {
+    @EnumClass
+    class Color extends EnumType {
+        @EnumValue
+        static RED = new Color();
+    }
+
+    expect(JSON.stringify(Color.RED))
+        .toBe(JSON.stringify(Color.RED.toString()));
+});
+
+test('toJSON can be override', () => {
+    @EnumClass
+    class Color extends EnumType {
+        @EnumValue
+        static RED = new Color('foo');
+
+        constructor(public name: string) {
+            super();
+        }
+
+        toJSON() {
+            return this.name;
+        }
+    }
+
+    expect(JSON.stringify(Color.RED))
+        .toBe(JSON.stringify(Color.RED.name));
+});
+

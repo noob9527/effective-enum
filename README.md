@@ -33,8 +33,9 @@ that's it, both Color and its instances are immutable, which means you can not a
 ```typescript
 Color.values()              // => [Color.RED, Color.BLUE]
 Color.valueOf('RED')        // => Color.RED
-Color.RED.toString()        // => 'RED'
-Color.RED.label             // => '蓝'
+Color.RED.toString()        // => "RED"
+JSON.stringify(Color.RED)   // => "RED"
+Color.RED.label             // => "红"
 Color.RED instanceof Color  // true
 
 Color.BLACK = new Color('')     // error
