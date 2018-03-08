@@ -16,8 +16,8 @@ export function EnumClass<T extends Function>(target: T): T {
             return values;
         },
     });
-    // class.valueOf
-    Reflect.defineProperty(target, 'valueOf', {
+    // class.of
+    Reflect.defineProperty(target, 'of', {
         enumerable: false,
         writable: false,
         configurable: false,
@@ -36,7 +36,7 @@ export function EnumClass<T extends Function>(target: T): T {
 
     return new Proxy(target, {
         // new EnumClass() is not allowed
-        construct: function (t: T, args: any[]) {
+        construct: function (t: T) {
             throw new Error(`enum class: '${t.name}' can not be instantiate`);
         },
         // EnumClass() is not allowed
@@ -74,7 +74,8 @@ export abstract class EnumType {
         throw Error('Did you forget to put the "EnumClass" decorator on the class?');
     }
 
-    static valueOf<T>(name: string): T {
+    // noinspection JSUnusedLocalSymbols
+    static of<T>(name: string): T {
         throw Error('Did you forget to put the "EnumClass" decorator on the class?');
     }
 }

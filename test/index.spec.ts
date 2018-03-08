@@ -19,8 +19,8 @@ describe('enum', () => {
         expect(values).toContain(Color.BLUE);
     });
 
-    it('class.valueOf', () => {
-        const red = Color.valueOf('RED');
+    it('class.of', () => {
+        const red = Color.of('RED');
         expect(red).toBe(Color.RED);
     });
 

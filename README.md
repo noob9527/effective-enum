@@ -32,13 +32,13 @@ class Color extends EnumType {
 that's it, both Color and its instances are immutable, which means you can not add,remove or change a color after definition.
 ```typescript
 Color.values()              // => [Color.RED, Color.BLUE]
-Color.valueOf('RED')        // => Color.RED
+Color.of('RED')             // => Color.RED
 Color.RED.toString()        // => "RED"
 JSON.stringify(Color.RED)   // => "RED"
 Color.RED.label             // => "红"
 Color.RED instanceof Color  // true
 
-Color.BLACK = new Color('')     // error
+Color.BLACK = 'whatever'        // error
 Color.RED.label = 'whatever'    // error
 new Color()                     // error
 Color()                         // error
