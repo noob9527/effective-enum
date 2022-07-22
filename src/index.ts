@@ -69,13 +69,24 @@ export function EnumValue<T extends Function>(target: T, key: string) {
     Object.freeze(value);
 }
 
-export abstract class EnumType {
-    static values<T>(): T[] {
+export interface IEnumType<T> {
+    new(): any;
+
+    values(): ReadonlyArray<T>;
+
+    of(name: string): T;
+}
+
+class EnumType {
+    static values(): ReadonlyArray<any> {
         throw Error('Did you forget to put the "EnumClass" decorator on the class?');
     }
 
-    // noinspection JSUnusedLocalSymbols
-    static of<T>(name: string): T {
+    static of(name: string): any {
         throw Error('Did you forget to put the "EnumClass" decorator on the class?');
     }
+}
+
+export function Enum<T>(): IEnumType<T> {
+    return EnumType as IEnumType<T>;
 }

@@ -1,12 +1,12 @@
-import { EnumClass, EnumType, EnumValue } from '../src';
+import { EnumClass, Enum, EnumValue } from '../src';
 
 describe('enum', () => {
     @EnumClass
-    class Color extends EnumType {
+    class Color extends Enum<Color>() {
         @EnumValue
-        static RED = new Color();
+        static readonly RED = new Color();
         @EnumValue
-        static BLUE = new Color();
+        static readonly BLUE = new Color();
 
         foo = 'foo';
         bar = 'bar';
@@ -24,11 +24,11 @@ describe('enum', () => {
         expect(red).toBe(Color.RED);
     });
 
-    it('EnumClass()', () => {
+    it('EnumClass() show throw error', () => {
         expect(() => (Color as Function)()).toThrow();
     });
 
-    it('new EnumClass()', () => {
+    it('new EnumClass() show throw error', () => {
         expect(() => new Color()).toThrow();
     });
 
@@ -71,7 +71,7 @@ describe('enum', () => {
 
 test('default toJSON should return instance.toString()', () => {
     @EnumClass
-    class Color extends EnumType {
+    class Color extends Enum<Color>() {
         @EnumValue
         static RED = new Color();
     }
@@ -82,7 +82,7 @@ test('default toJSON should return instance.toString()', () => {
 
 test('toJSON can be override', () => {
     @EnumClass
-    class Color extends EnumType {
+    class Color extends Enum() {
         @EnumValue
         static RED = new Color('foo');
 
