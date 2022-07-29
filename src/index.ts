@@ -70,7 +70,7 @@ export function EnumValue<T extends Function>(target: T, key: string) {
 }
 
 export interface IEnumType<T> {
-    new(): any;
+    new(): {};
 
     values(): ReadonlyArray<T>;
 
