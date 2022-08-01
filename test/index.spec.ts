@@ -1,4 +1,4 @@
-import { EnumClass, Enum, EnumValue } from '../src';
+import {EnumClass, Enum, EnumValue} from '../src';
 
 describe('enum', () => {
     @EnumClass
@@ -9,7 +9,6 @@ describe('enum', () => {
         static readonly BLUE = new Color();
 
         foo = 'foo';
-        bar = 'bar';
     }
 
     it('class.values', () => {
@@ -99,3 +98,31 @@ test('toJSON can be override', () => {
         .toBe(JSON.stringify(Color.RED.name));
 });
 
+test('instance property, instance method should work like normal class', () => {
+    @EnumClass
+    class Color extends Enum<Color>() {
+        @EnumValue
+        static readonly RED = new Color();
+        @EnumValue
+        static readonly BLUE = new Color();
+
+        foo = 'foo';
+
+        get bar(): string {
+            return 'bar';
+        }
+
+        baz(): string {
+            return 'baz';
+        }
+
+        qux = () => {
+            return 'qux';
+        }
+    }
+
+    expect(Color.RED.foo).toBe('foo');
+    expect(Color.RED.bar).toBe('bar');
+    expect(Color.RED.baz()).toBe('baz');
+    expect(Color.RED.qux()).toBe('qux');
+});
