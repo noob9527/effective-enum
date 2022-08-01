@@ -1,0 +1,35 @@
+{
+  "name": "typescript",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "parcel build ./src/window-id.ts --no-source-maps --out-dir build --no-minify"
+  },
+  "dependencies": {
+    "effective-enum": "../../"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "babel-preset-react-app": "^9.0.0",
+    "parcel-bundler": "^1.12.5",
+    "parcel-plugin-electron-dotenv": "^0.1.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ],
+    "plugins": []
+  }
+}
