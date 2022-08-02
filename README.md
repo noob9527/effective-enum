@@ -16,7 +16,7 @@ yarn add effective-enum
 ### getting started
 ```typescript
 @EnumClass
-class Color extends EnumType {
+class Color extends Enum<Color>() {
     @EnumValue
     static RED = new Color('红');
     @EnumValue
@@ -34,6 +34,7 @@ that's it, both Color and its instances are immutable, which means you can not a
 Color.values()              // => [Color.RED, Color.BLUE]
 Color.of('RED')             // => Color.RED
 Color.RED.toString()        // => "RED"
+Color.RED.name              // => "RED"
 JSON.stringify(Color.RED)   // => "RED"
 Color.RED.label             // => "红"
 Color.RED instanceof Color  // true

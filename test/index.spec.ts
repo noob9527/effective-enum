@@ -126,3 +126,39 @@ test('instance property, instance method should work like normal class', () => {
     expect(Color.RED.baz()).toBe('baz');
     expect(Color.RED.qux()).toBe('qux');
 });
+
+describe('instance.name property', () => {
+    it('instance.name property should equal to its name(like java enum)', () => {
+        @EnumClass
+        class Color extends Enum<Color>() {
+            @EnumValue
+            static RED = new Color();
+        }
+        expect(Color.RED.name).toBe('RED');
+    });
+
+    it('overwrite name property should have no effect case 1', () => {
+        @EnumClass
+        class Color extends Enum<Color>() {
+            @EnumValue
+            static RED = new Color();
+            name = 'whatever';
+        }
+
+        expect(Color.RED.name).toBe('RED');
+    });
+
+    it('overwrite name property should have no effect case 2', () => {
+        @EnumClass
+        class Color extends Enum<Color>() {
+            @EnumValue
+            static RED = new Color('BLUE');
+
+            constructor(public name: string) {
+                super();
+            }
+        }
+
+        expect(Color.RED.name).toBe('RED');
+    });
+});

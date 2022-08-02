@@ -65,12 +65,20 @@ export function EnumValue<T extends Function>(target: T, key: string) {
             value: () => key,
         });
     });
+    Reflect.defineProperty(value, 'name', {
+        enumerable: false,
+        writable: false,
+        configurable: false,
+        value: key,
+    });
 
     Object.freeze(value);
 }
 
 export interface IEnumType<T> {
-    new(): {};
+    new(): {
+       readonly name: string,
+    };
 
     values(): ReadonlyArray<T>;
 
