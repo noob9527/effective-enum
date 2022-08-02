@@ -95,6 +95,6 @@ class EnumType {
     }
 }
 
-export function Enum<T>(): IEnumType<T> {
+export function EnumFactory<T>(): IEnumType<T> {
     return EnumType as IEnumType<T>;
 }

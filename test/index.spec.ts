@@ -1,8 +1,8 @@
-import {EnumClass, Enum, EnumValue} from '../src';
+import {EnumClass, EnumFactory, EnumValue} from '../src';
 
 describe('enum', () => {
     @EnumClass
-    class Color extends Enum<Color>() {
+    class Color extends EnumFactory<Color>() {
         @EnumValue
         static readonly RED = new Color();
         @EnumValue
@@ -70,7 +70,7 @@ describe('enum', () => {
 
 test('default toJSON should return instance.toString()', () => {
     @EnumClass
-    class Color extends Enum<Color>() {
+    class Color extends EnumFactory<Color>() {
         @EnumValue
         static RED = new Color();
     }
@@ -81,7 +81,7 @@ test('default toJSON should return instance.toString()', () => {
 
 test('toJSON can be override', () => {
     @EnumClass
-    class Color extends Enum() {
+    class Color extends EnumFactory() {
         @EnumValue
         static RED = new Color('foo');
 
@@ -100,7 +100,7 @@ test('toJSON can be override', () => {
 
 test('instance property, instance method should work like normal class', () => {
     @EnumClass
-    class Color extends Enum<Color>() {
+    class Color extends EnumFactory<Color>() {
         @EnumValue
         static readonly RED = new Color();
         @EnumValue
@@ -130,7 +130,7 @@ test('instance property, instance method should work like normal class', () => {
 describe('instance.name property', () => {
     it('instance.name property should equal to its name(like java enum)', () => {
         @EnumClass
-        class Color extends Enum<Color>() {
+        class Color extends EnumFactory<Color>() {
             @EnumValue
             static RED = new Color();
         }
@@ -139,7 +139,7 @@ describe('instance.name property', () => {
 
     it('overwrite name property should have no effect case 1', () => {
         @EnumClass
-        class Color extends Enum<Color>() {
+        class Color extends EnumFactory<Color>() {
             @EnumValue
             static RED = new Color();
             name = 'whatever';
@@ -150,7 +150,7 @@ describe('instance.name property', () => {
 
     it('overwrite name property should have no effect case 2', () => {
         @EnumClass
-        class Color extends Enum<Color>() {
+        class Color extends EnumFactory<Color>() {
             @EnumValue
             static RED = new Color('BLUE');
 
@@ -160,5 +160,36 @@ describe('instance.name property', () => {
         }
 
         expect(Color.RED.name).toBe('RED');
+    });
+});
+
+namespace Subject {
+    export enum Constant {
+        MATH = 'MATH',
+        PHYSIC = 'PHYSIC'
+    }
+
+    @EnumClass
+    export class Enum extends EnumFactory<Enum>() {
+        @EnumValue
+        static readonly [Constant.MATH] = new Enum();
+        @EnumValue
+        static readonly [Constant.PHYSIC] = new Enum();
+    }
+}
+
+describe('namespace usage', () => {
+    it('as property index in interface', () => {
+        interface SomeInterface {
+            [Subject.Constant.PHYSIC]: string;
+            // [Subject.Enum.PHYSIC]: string;    // compile time error
+        }
+    });
+
+    it('as property index in object', () => {
+        const obj = {
+            [Subject.Constant.PHYSIC]: 'asdf',
+            [Subject.Enum.PHYSIC.name]: 'asdf',
+        };
     });
 });

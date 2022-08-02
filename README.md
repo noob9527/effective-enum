@@ -14,13 +14,16 @@ yarn add effective-enum
 ```
 
 ### getting started
+
 ```typescript
+import {EnumClass, EnumValue, EnumFactory} from 'effective-enum';
+
 @EnumClass
-class Color extends Enum<Color>() {
+class Color extends EnumFactory<Color>() {
     @EnumValue
-    static RED = new Color('红');
+    static readonly RED = new Color('红');
     @EnumValue
-    static BLUE = new Color('蓝');
+    static readonly BLUE = new Color('蓝');
 
     constructor(
         public label: string,
@@ -43,6 +46,58 @@ Color.BLACK = 'whatever'        // error
 Color.RED.label = 'whatever'    // error
 new Color()                     // error
 Color()                         // error
+```
+
+### drawback compare to typescript built in `enum`
+In interface definition block, you can only use string/number/unique symbol as property keys. for example:
+
+```typescript
+import {EnumClass, EnumFactory} from './index';
+
+enum BuiltInColorEnum {
+    RED = 'RED',
+    BLUE = 'BLUE'
+}
+
+@EnumClass
+class EffectiveColorEnum extends EnumFactory<EffectiveColorEnum>() {
+    @EnumValue
+    static readonly RED = new Color();
+    @EnumValue
+    static readonly BLUE = new Color();
+}
+
+interface SomeInterface {
+    [BuiltInColorEnum.RED]: string;         // this should work
+    [EffectiveColorEnum.RED]: string;       // compile time error
+}
+```
+Anyway, one can combine these two types of enum definition. to make a mixed "enum" type. e.g.
+
+```typescript
+import {EnumClass, EnumValue, EnumFactory} from './index';
+
+namespace Color {
+    export enum Constant {
+        RED = 'RED',
+        BLUE = 'BLUE'
+    }
+
+    @EnumClass
+    export class Enum extends EnumFactory<Enum>() {
+        @EnumValue
+        static readonly [Constant.RED] = new Color();
+        @EnumValue
+        static readonly [Constant.BLUE] = new Color();
+    }
+}
+
+interface SomeInterface {
+    [Color.Constant.RED]: string;
+    [Color.Constant.BLUE]: string;
+}
+
+Color.Enum.RED.name              // => "RED"
 ```
 
 ### license
