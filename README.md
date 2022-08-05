@@ -1,14 +1,20 @@
 [![Build Status](https://travis-ci.org/noob9527/effective-enum.svg?branch=master)](https://travis-ci.org/noob9527/effective-enum)
 [![Coverage Status](https://coveralls.io/repos/github/noob9527/effective-enum/badge.svg?branch=master)](https://coveralls.io/github/noob9527/effective-enum?branch=master)
+
 # effective-enum
+
 > for the time being, the typescript enum type is quite hard to use, this repo tries to implement a typesafe enum pattern described in the first edition of [effective java](https://www.amazon.com/Effective-Java-3rd-Joshua-Bloch/dp/0134685997)
 
 ### installation
+
 via npm
+
 ```
 npm install effective-enum --save
 ```
+
 via yarn
+
 ```
 yarn add effective-enum
 ```
@@ -32,7 +38,10 @@ class Color extends EnumFactory<Color>() {
     }
 }
 ```
-that's it, both Color and its instances are immutable, which means you can not add,remove or change a color after definition.
+
+that's it, both Color and its instances are immutable, which means you can not
+add,remove or change a color after definition.
+
 ```typescript
 Color.values()              // => [Color.RED, Color.BLUE]
 Color.of('RED')             // => Color.RED
@@ -49,7 +58,9 @@ Color()                         // error
 ```
 
 ### drawback compare to typescript built in `enum`
-In interface definition block, you can only use string/number/unique symbol as property keys. for example:
+
+In interface definition block, you can only use string/number/unique symbol as
+property keys. for example:
 
 ```typescript
 import {EnumClass, EnumFactory} from './index';
@@ -72,24 +83,27 @@ interface SomeInterface {
     [EffectiveColorEnum.RED]: string;       // compile time error
 }
 ```
-Anyway, one can combine these two types of enum definition. to make a mixed "enum" type. e.g.
+
+Anyway, one can make use
+of [Merging Namespaces with Classes](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-namespaces-with-classes)
+approach. to combine these two types of enum definition. e.g.
 
 ```typescript
-import {EnumClass, EnumValue, EnumFactory} from './index';
+import {EnumClass, EnumValue, EnumFactory} from 'effective-enum';
 
 namespace Color {
     export enum Constant {
         RED = 'RED',
-        BLUE = 'BLUE'
+        BLUE = 'BLUE',
     }
+}
 
-    @EnumClass
-    export class Enum extends EnumFactory<Enum>() {
-        @EnumValue
-        static readonly [Constant.RED] = new Color();
-        @EnumValue
-        static readonly [Constant.BLUE] = new Color();
-    }
+@EnumClass
+export class Color extends EnumFactory<Color>() {
+    @EnumValue
+    static readonly RED = new Color();
+    @EnumValue
+    static readonly BLUE = new Color();
 }
 
 interface SomeInterface {
@@ -97,7 +111,7 @@ interface SomeInterface {
     [Color.Constant.BLUE]: string;
 }
 
-Color.Enum.RED.name              // => "RED"
+Color.RED.name              // => "RED"
 ```
 
 ### license
