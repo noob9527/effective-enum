@@ -3,6 +3,9 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "es5",
+    // somehow if we want to change the target to es6
+    // we have to set moduleResolution to "node". otherwise the code won't compile.
+//    "moduleResolution": "Node",
     "sourceMap": true,
     "declaration": true,
     "emitDecoratorMetadata": true,

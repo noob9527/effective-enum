@@ -31,8 +31,17 @@ export function EnumClass<T extends Function>(target: T): T {
             return this.toString();
         };
     }
+    Object.keys(target).forEach(key => {
+        Reflect.defineProperty(target, key, {
+            writable: false,
+            configurable: false,
+        });
+    });
 
-    Object.freeze(target);
+    // we don't free target here, because we hope the enum class is 'extendable'.
+    // which means you can add static property/function to the enum class after definition.
+    // this is inspired from extension property/method in kotlin.
+    // Object.freeze(target);
 
     return new Proxy(target, {
         // new EnumClass() is not allowed
@@ -72,6 +81,11 @@ export function EnumValue<T extends Function>(target: T, key: string) {
         value: key,
     });
 
+    // freeze enum value, to make it immutable
+    // you can still extend the instance by extend the prototype
+    // e.g.
+    // SomeEnumClass.prototype.foo = () => 'foo'
+    // SomeEnumClass.prototype.bar = 'bar'
     Object.freeze(value);
 }
 
