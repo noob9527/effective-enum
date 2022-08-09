@@ -101,11 +101,11 @@ export interface IEnumType<T> {
 
 class EnumType {
     static values(): ReadonlyArray<any> {
-        throw Error('Did you forget to put the "EnumClass" decorator on the class?');
+        throw Error(`values() method is not available during constructing '${this.name}' class. if it is not the case you may want to double check that you have put the @EnumClass decorator on the '${this.name}' class!`);
     }
 
     static of(name: string): any {
-        throw Error('Did you forget to put the "EnumClass" decorator on the class?');
+        throw Error(`of(name: string) method is not available during constructing '${this.name}' class. if it is not the case you may want to double check that you have put the @EnumClass decorator on the '${this.name}' class!`);
     }
 }
 

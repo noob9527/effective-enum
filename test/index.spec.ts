@@ -12,26 +12,6 @@ describe('enum', () => {
             foo = 'foo';
         }
 
-        it('class.values', () => {
-            const values = Color.values();
-            expect(values).toHaveLength(2);
-            expect(values).toContain(Color.RED);
-            expect(values).toContain(Color.BLUE);
-        });
-
-        it('class.of', () => {
-            const red = Color.of('RED');
-            expect(red).toBe(Color.RED);
-        });
-
-        it('EnumClass() show throw error', () => {
-            expect(() => (Color as Function)()).toThrow();
-        });
-
-        it('new EnumClass() show throw error', () => {
-            expect(() => new Color()).toThrow();
-        });
-
         it('instance.toString, toLocaleString, valueOf', () => {
             [
                 Color.RED.toString(),
@@ -132,6 +112,62 @@ describe('enum', () => {
         it('remove property from enum class should fail', () => {
             expect(Reflect.deleteProperty(Color, 'RED')).toBeFalsy();
         });
+
+        it('EnumClass() show throw error', () => {
+            expect(() => (Color as Function)()).toThrow();
+        });
+
+        it('new EnumClass() show throw error', () => {
+            expect(() => new Color()).toThrow();
+        });
+
+        it('class.values()', () => {
+            const values = Color.values();
+            expect(values).toHaveLength(2);
+            expect(values).toContain(Color.RED);
+            expect(values).toContain(Color.BLUE);
+        });
+
+        it('class.of(name: string)', () => {
+            const red = Color.of('RED');
+            expect(red).toBe(Color.RED);
+        });
+
+        describe('call values() and of(name: string) at constructing stage should throw', () => {
+            it('call class.values() during construct stage should throw', () => {
+                expect(() => {
+                    @EnumClass
+                    class Sample extends EnumFactory<Sample>() {
+                        @EnumValue
+                        static readonly RED = new Sample();
+                        @EnumValue
+                        static readonly BLUE = new Sample();
+
+                        constructor() {
+                            super();
+                            Sample.values();
+                        }
+                    }
+                }).toThrow('not available');
+            });
+            it('class.of(name: string) during construct stage should throw', () => {
+                expect(() => {
+                    @EnumClass
+                    class Sample extends EnumFactory<Sample>() {
+                        @EnumValue
+                        static readonly RED = new Sample();
+                        @EnumValue
+                        static readonly BLUE = new Sample();
+
+                        constructor() {
+                            super();
+                            Sample.of('RED');
+                        }
+                    }
+                }).toThrow('not available');
+            });
+        });
+
     });
 
     describe('enum value', () => {
@@ -178,7 +214,7 @@ describe('enum', () => {
 
             qux = () => {
                 return 'qux';
-            }
+            };
         }
 
         expect(Color.RED.foo).toBe('foo');
